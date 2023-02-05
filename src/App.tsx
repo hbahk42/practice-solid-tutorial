@@ -1,15 +1,38 @@
-import type { Component } from "solid-js";
-import { HelloWorld } from "./components/HelloWorld";
+import { BookList } from "./BookList";
+import { AddBook } from "./AddBook";
+import { createSignal } from "solid-js";
 
-const App: Component = () => {
+export type Book = {
+    title: string;
+    author: string;
+};
+
+const initialBooks: Book[] = [
+    { title: "Code Complete", author: "Steve McConnell" },
+    { title: "The Hobbit", author: "J.R.R. Tolkien" },
+    { title: "Living a Feminist Life", author: "Sarah Ahmed" },
+];
+
+interface BookshelfProps {
+    name: string;
+}
+
+function Bookshelf(props: BookshelfProps) {
+    const [books, setBooks] = createSignal(initialBooks);
+
     return (
         <div>
-            <header>
-                <h1>Welcome</h1>
-                <HelloWorld />
-            </header>
+            <h1>{props.name}'s Bookshelf</h1>
+            <BookList books={books()} />
+            <AddBook setBooks={setBooks} />
         </div>
     );
-};
+}
+
+function App() {
+    return (
+        <Bookshelf name="Solid" />
+    );
+}
 
 export default App;
